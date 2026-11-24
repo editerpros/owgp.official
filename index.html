@@ -1,1450 +1,207 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OPEN-WHEEL GRAND PRIX (OWGP) — Coming Soon</title>
-
-  <!-- Load Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Load Geometric & Technical Motorsport Fonts (Space Grotesk, Inter, JetBrains Mono) -->
+  <meta name="theme-color" content="#090b10" />
+  <meta name="description" content="Open Wheel Grand Prix — a next-generation open-wheel racing experience." />
+  <title>OWGP — Open Wheel Grand Prix</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['"Space Grotesk"', 'sans-serif'],
-            sans: ['"Inter"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            obsidian: '#090A0D',
-            carbon: '#111318',
-            pitwall: '#171A21',
-            crimson: '#FF1E2D',
-            amberRace: '#FF9E00',
-            telemetryCyan: '#00E5FF',
-          },
-          backgroundImage: {
-            'carbon-weave': `
-              radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 0),
-              radial-gradient(rgba(255, 255, 255, 0.045) 1px, #111318 0)
-            `,
-          },
-          backgroundSize: {
-            'carbon-weave': '16px 16px',
-          },
-        },
-      },
-    };
-  </script>
-
-  <style>
-    /* Custom Carbon Fiber Weave & Racing Telemetry Accents */
-    body {
-      background-color: #090A0D;
-      color: #F3F4F6;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-    }
-
-    .carbon-panel {
-      background-color: #111318;
-      background-image:
-        linear-gradient(45deg, rgba(255, 255, 255, 0.025) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.025) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.025) 75%);
-      background-size: 12px 12px;
-      background-position: 0 0, 0 6px, 6px -6px, -6px 0;
-    }
-
-    /* Subtle angled telemetry stripe */
-    .racing-stripe {
-      background: repeating-linear-gradient(
-        -55deg,
-        rgba(255, 30, 45, 0.14),
-        rgba(255, 30, 45, 0.14) 6px,
-        transparent 6px,
-        transparent 14px
-      );
-    }
-
-    /* Smooth pulse indicator for pit-wall live telemetry */
-    @keyframes telemetryPulse {
-      0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.45;
-        transform: scale(0.88);
-      }
-    }
-
-    .live-dot {
-      animation: telemetryPulse 1.8s infinite ease-in-out;
-    }
-
-    /* Telemetry meter bar transition */
-    .telemetry-bar-fill {
-      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.35s ease;
-    }
-
-    /* Custom subtle scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #090A0D;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #232733;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #FF1E2D;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="antialiased selection:bg-crimson selection:text-white">
+<body>
+  <div class="noise" aria-hidden="true"></div>
 
-  <!-- Top Pit-Wall Telemetry Ticker Bar -->
-  <div class="w-full bg-pitwall border-b border-white/10 text-xs font-mono text-gray-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-2.5">
-        <span class="inline-block w-2 h-2 rounded-full bg-crimson live-dot"></span>
-        <span class="uppercase tracking-wider text-white font-semibold">OWGP // SIM-CORE v0.94</span>
-        <span class="hidden sm:inline text-gray-500">|</span>
-        <span class="hidden sm:inline text-amberRace">PRE-SEASON WIND TUNNEL &amp; TRACK VALIDATION</span>
-      </div>
-      <div class="flex items-center gap-4 text-gray-400">
-        <span>TICK: <strong class="text-white">1000Hz</strong></span>
-        <span class="hidden md:inline">AERO: <strong class="text-telemetryCyan">CFD-ACTIVE</strong></span>
-        <span class="text-crimson font-semibold">COMING SOON</span>
-      </div>
-    </div>
-  </div>
+  <header class="header">
+    <a class="brand" href="#top" aria-label="OWGP home">
+      <span class="brand-mark">O<span>W</span></span>
+      <span class="brand-name">OPEN WHEEL<br /><b>GRAND PRIX</b></span>
+    </a>
 
-  <!-- Navigation Header -->
-  <header class="sticky top-0 z-40 bg-obsidian/85 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Brand Mark -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 rounded-lg bg-crimson/15 border border-crimson/50 flex items-center justify-center group-hover:bg-crimson/25 transition">
-          <!-- Open-Wheel Front Wing / Apex Mark SVG -->
-          <svg class="w-5 h-5 text-crimson" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M3 16L12 6L21 16" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M6 19H18" stroke-linecap="round" />
-            <circle cx="12" cy="14" r="2" fill="currentColor" />
-          </svg>
-        </div>
-        <div class="flex items-baseline gap-2">
-          <span class="font-display font-bold text-lg tracking-tight text-white">OWGP</span>
-          <span class="hidden sm:inline text-xs font-mono uppercase tracking-widest text-gray-400">Open-Wheel Grand Prix</span>
-        </div>
-      </a>
+    <nav class="nav" id="nav" aria-label="Primary navigation">
+      <a href="#game">THE GAME</a>
+      <a href="#features">FEATURES</a>
+      <a href="#gallery">GALLERY</a>
+      <a href="#community">COMMUNITY</a>
+    </nav>
 
-      <!-- Navigation Links -->
-      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-300">
-        <a href="#countdown" class="hover:text-white transition">Timing Tower</a>
-        <a href="#pillars" class="hover:text-white transition">Simulation Pillars</a>
-        <a href="#livery-telemetry" class="hover:text-white transition">Livery &amp; Telemetry</a>
-      </nav>
+    <a class="header-cta" href="#community">JOIN THE GRID <span>↗</span></a>
 
-      <!-- Waitlist CTA -->
-      <div class="flex items-center gap-2.5">
-        <button
-          id="open-grid-modal-btn"
-          type="button"
-          class="px-4 py-2 rounded-lg bg-crimson hover:bg-red-600 text-white text-xs sm:text-sm font-semibold tracking-wide transition shadow-lg shadow-crimson/20 cursor-pointer"
-        >
-          Reserve Grid Spot
-        </button>
-      </div>
-    </div>
+    <button
+      type="button"
+      class="menu-toggle"
+      id="menuToggle"
+      aria-label="Toggle menu"
+      aria-controls="nav"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
   </header>
 
-  <main>
-    <!-- 1) HERO SECTION -->
-    <section class="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-24 border-b border-white/10">
-      <!-- Ambient Motorsport Glows -->
-      <div class="pointer-events-none absolute -top-28 left-1/2 -translate-x-1/2 w-[900px] h-[420px] rounded-full bg-crimson/15 blur-[130px]"></div>
-      <div class="pointer-events-none absolute top-40 right-0 w-[340px] h-[340px] rounded-full bg-amberRace/10 blur-[120px]"></div>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> THE NEXT GENERATION OF RACING</p>
+        <h1>CHASE<br /><em>THE LIMIT.</em></h1>
+        <p class="hero-copy">Precision. Pressure. Pure speed.<br />Welcome to the world of Open Wheel Grand Prix.</p>
+      </div>
 
-      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          <!-- Left Column: Title, Coming Soon Badge, Tagline, Waitlist Form -->
-          <div class="lg:col-span-7 space-y-6">
-            <!-- Status Badge -->
-            <div class="inline-flex flex-wrap items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-carbon border border-white/15 shadow-inner">
-              <span class="w-2 h-2 rounded-full bg-amberRace live-dot"></span>
-              <span class="font-mono text-xs font-semibold uppercase tracking-widest text-amberRace">Coming Soon</span>
-              <span class="text-white/25">•</span>
-              <span class="font-mono text-xs text-gray-300">OPEN-WHEEL RACING SIMULATION</span>
-            </div>
-
-            <!-- Main Display Title -->
-            <div class="space-y-2">
-              <div class="flex flex-wrap items-center gap-3">
-                <p class="font-mono text-xs sm:text-sm uppercase tracking-[0.22em] text-crimson font-semibold">
-                  Precision Single-Seater Motorsport
-                </p>
-                <span class="px-2.5 py-0.5 rounded-full bg-pitwall border border-white/15 font-mono text-xs text-gray-300">
-                  GRID SLOTS OPEN: <strong id="hero-slots-remaining" class="text-amberRace">-- / 36</strong>
-                </span>
-              </div>
-              <h1 class="font-display font-bold text-4xl sm:text-6xl lg:text-[4.15rem] leading-[1.03] tracking-tight text-white">
-                OPEN-WHEEL
-                <span class="block text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-gray-400">
-                  GRAND PRIX
-                </span>
-              </h1>
-            </div>
-
-            <!-- Tagline -->
-            <p class="text-base sm:text-lg text-gray-300 leading-relaxed max-w-2xl">
-              Engineered for razor-sharp <span class="text-white font-medium">precision aerodynamics</span>, committed
-              <span class="text-white font-medium">wheel-to-wheel racing</span>, and high-stakes
-              <span class="text-amberRace font-medium">dynamic weather &amp; tire strategy</span> where every millimeter of slipstream and compound degradation decides the podium.
-            </p>
-
-            <!-- Interactive Email Waitlist & Quick Grid Reservation Trigger -->
-            <div class="pt-1 max-w-xl space-y-4">
-              <form id="waitlist-form" class="flex flex-col sm:flex-row gap-3" novalidate>
-                <div class="relative flex-1">
-                  <label for="waitlist-email" class="sr-only">Email address for OWGP closed beta and launch updates</label>
-                  <input
-                    id="waitlist-email"
-                    type="email"
-                    required
-                    placeholder="driver@pitwall.racing"
-                    class="w-full px-4 py-3.5 rounded-xl bg-carbon border border-white/15 text-white placeholder-gray-500 font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/30 transition"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-crimson to-[#d91422] hover:from-[#ff2e3c] hover:to-crimson text-white font-semibold text-sm tracking-wide shadow-lg shadow-crimson/25 transition active:scale-[0.99] shrink-0 cursor-pointer"
-                >
-                  Reserve Grid Spot
-                </button>
-              </form>
-
-              <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-gray-400">
-                <button
-                  id="open-full-grid-config-btn"
-                  type="button"
-                  class="text-telemetryCyan hover:text-white underline underline-offset-4 transition cursor-pointer"
-                >
-                  Configure Callsign, Car # &amp; Grid Slot &rarr;
-                </button>
-                <span id="active-pass-shortcut-wrap" class="hidden">
-                  <button
-                    id="view-active-pass-btn"
-                    type="button"
-                    class="text-amberRace hover:underline font-semibold cursor-pointer"
-                  >
-                    View Reserved Grid Pass
-                  </button>
-                </span>
-              </div>
-
-              <!-- Instant Feedback Banner -->
-              <div
-                id="waitlist-feedback"
-                role="status"
-                aria-live="polite"
-                class="hidden px-4 py-3 rounded-xl border text-xs sm:text-sm font-mono flex items-start gap-2.5"
-              ></div>
-
-              <!-- Reserved Grid Pass Card (Rendered when user has an active reservation) -->
-              <div
-                id="reserved-pass-panel"
-                class="hidden carbon-panel rounded-2xl border border-amberRace/40 p-4 sm:p-5 space-y-3 shadow-lg"
-              >
-                <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-2.5">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                    <span class="font-mono text-xs uppercase tracking-widest text-amberRace font-bold">
-                      Confirmed Grid Allocation
-                    </span>
-                  </div>
-                  <span id="pass-confirmation-code" class="font-mono text-xs font-bold text-white bg-obsidian px-2.5 py-1 rounded border border-white/15">
-                    OWGP-PASS-0000
-                  </span>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono text-xs">
-                  <div class="rounded-lg bg-obsidian/90 border border-white/10 p-2.5">
-                    <span class="text-gray-400 block text-[10px]">DRIVER</span>
-                    <strong id="pass-driver" class="text-white truncate block mt-0.5">--</strong>
-                  </div>
-                  <div class="rounded-lg bg-obsidian/90 border border-white/10 p-2.5">
-                    <span class="text-gray-400 block text-[10px]">CAR / LIVERY</span>
-                    <strong id="pass-livery" class="text-crimson truncate block mt-0.5">--</strong>
-                  </div>
-                  <div class="rounded-lg bg-obsidian/90 border border-white/10 p-2.5">
-                    <span class="text-gray-400 block text-[10px]">GRID / CLASS</span>
-                    <strong id="pass-grid" class="text-telemetryCyan truncate block mt-0.5">--</strong>
-                  </div>
-                  <div class="rounded-lg bg-obsidian/90 border border-white/10 p-2.5">
-                    <span class="text-gray-400 block text-[10px]">PIT BAY</span>
-                    <strong id="pass-pitbay" class="text-amberRace truncate block mt-0.5">--</strong>
-                  </div>
-                </div>
-
-                <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-                  <span id="pass-email" class="font-mono text-xs text-gray-400 truncate max-w-[220px]">--</span>
-                  <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
-                    <button
-                      id="copy-pass-btn"
-                      type="button"
-                      class="px-3 py-1.5 rounded-lg bg-obsidian hover:bg-white/10 border border-white/15 text-white font-semibold transition cursor-pointer"
-                    >
-                      Copy Pass
-                    </button>
-                    <button
-                      id="edit-pass-btn"
-                      type="button"
-                      class="px-3 py-1.5 rounded-lg bg-obsidian hover:bg-white/10 border border-white/15 text-telemetryCyan font-semibold transition cursor-pointer"
-                    >
-                      Modify
-                    </button>
-                    <button
-                      id="cancel-pass-btn"
-                      type="button"
-                      class="px-3 py-1.5 rounded-lg bg-crimson/15 hover:bg-crimson/25 border border-crimson/40 text-red-200 font-semibold transition cursor-pointer"
-                    >
-                      Release Spot
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <p class="text-xs text-gray-400 flex flex-wrap items-center gap-x-4 gap-y-1">
-                <span>✓ Closed telemetry playtest invites</span>
-                <span>✓ Dev build notes &amp; livery drops</span>
-                <span>✓ Saved locally on your device</span>
-              </p>
-            </div>
+      <div class="hero-bottom">
+        <div class="hero-bottom-left">
+          <div class="hero-stat">
+            <span class="stat-number">01</span>
+            <span class="stat-label">BUILT FOR<br />THE GRID</span>
           </div>
+          <a class="button button-primary" href="#game">DISCOVER OWGP <span>↗</span></a>
+        </div>
+        <div class="hero-scroll" aria-hidden="true">SCROLL TO EXPLORE <span class="scroll-line"></span></div>
+        <div class="hero-season">OWGP <span>—</span> RACING PROJECT</div>
+      </div>
 
-          <!-- Right Column: Stylized Open-Wheel Telemetry Card -->
-          <div class="lg:col-span-5">
-            <div class="carbon-panel rounded-2xl border border-white/15 p-5 sm:p-6 shadow-2xl relative overflow-hidden">
-              <div class="racing-stripe absolute top-0 right-0 w-32 h-16 pointer-events-none opacity-80"></div>
+      <div class="hero-side-label" aria-hidden="true">OPEN WHEEL / GRAND PRIX</div>
+    </section>
 
-              <div class="flex items-center justify-between border-b border-white/10 pb-3.5 mb-4">
-                <div>
-                  <span class="font-mono text-[11px] uppercase tracking-widest text-gray-400">Chassis Spec</span>
-                  <h2 class="font-display font-bold text-lg text-white">OWGP-26 Concept</h2>
-                </div>
-                <span class="px-2.5 py-1 rounded-md bg-crimson/15 border border-crimson/40 text-crimson font-mono text-xs font-semibold">
-                  IN DEV
-                </span>
-              </div>
+    <section class="intro section" id="game">
+      <div class="section-kicker">01 / THE GAME</div>
+      <div class="intro-grid">
+        <h2>MADE FOR<br /><span>THE MOMENT.</span></h2>
+        <div class="intro-text">
+          <p class="lead">Every corner is a choice. Every straight is a chance. OWGP brings the intensity of open-wheel racing to your screen.</p>
+          <p>Build your rhythm, find your racing line, and push your limits. A racing experience shaped around speed, competition, and the pursuit of the perfect lap.</p>
+          <a class="text-link" href="#features">WHAT MAKES OWGP DIFFERENT <span>↗</span></a>
+        </div>
+      </div>
 
-              <!-- Custom Vector Open-Wheel Silhouette & Aero Flow Diagram -->
-              <div class="rounded-xl bg-obsidian/90 border border-white/10 p-4 mb-4">
-                <svg viewBox="0 0 420 150" class="w-full h-auto" role="img" aria-label="Open-wheel race car side-profile telemetry schematic">
-                  <!-- Grid lines -->
-                  <line x1="0" y1="126" x2="420" y2="126" stroke="#262B38" stroke-width="1.5" />
-                  <line x1="20" y1="30" x2="400" y2="30" stroke="#181C26" stroke-dasharray="4 4" />
-                  <line x1="20" y1="62" x2="400" y2="62" stroke="#181C26" stroke-dasharray="4 4" />
+      <div class="intro-banner">
+        <div class="banner-caption">
+          <span>RACE. REFINE. REPEAT.</span>
+          <span>NO ROOM FOR SECOND GUESSES.</span>
+        </div>
+        <div class="banner-word" aria-hidden="true">FULL<br />THROTTLE</div>
+        <div class="banner-stripe" aria-hidden="true"></div>
+      </div>
+    </section>
 
-                  <!-- Airflow / Slipstream Streamlines -->
-                  <path d="M18 44 Q130 34 220 46 T402 42" fill="none" stroke="#00E5FF" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="6 5" />
-                  <path d="M24 72 Q150 66 245 75 T398 70" fill="none" stroke="#FF9E00" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="5 5" />
+    <section class="features section" id="features">
+      <div class="section-kicker">02 / THE EXPERIENCE</div>
+      <div class="features-heading">
+        <h2>MORE THAN<br /><span>JUST A RACE.</span></h2>
+        <p>Designed around the details that make motorsport unforgettable.</p>
+      </div>
 
-                  <!-- Rear Wing -->
-                  <path d="M332 54 L368 48 L364 78 L334 80 Z" fill="#1C202B" stroke="#FF1E2D" stroke-width="1.8" />
-                  <path d="M338 62 L366 58" stroke="#FF9E00" stroke-width="1.5" />
-
-                  <!-- Main Monocoque & Engine Cover -->
-                  <path
-                    d="M52 104 L135 88 L205 74 L336 78 L345 102 L265 106 L120 108 Z"
-                    fill="#161922"
-                    stroke="#F3F4F6"
-                    stroke-width="1.8"
-                  />
-                  <!-- Crimson Accent Stripe along Chassis -->
-                  <path
-                    d="M115 96 L215 80 L334 84"
-                    fill="none"
-                    stroke="#FF1E2D"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                  />
-
-                  <!-- Halo & Cockpit -->
-                  <path d="M192 75 Q214 58 242 74" fill="none" stroke="#E5E7EB" stroke-width="3.2" stroke-linecap="round" />
-                  <ellipse cx="218" cy="76" rx="14" ry="4" fill="#090A0D" />
-
-                  <!-- Front Wing Assembly -->
-                  <path d="M32 110 L86 102 L92 112 L36 116 Z" fill="#FF1E2D" fill-opacity="0.85" />
-                  <path d="M40 105 L82 99" stroke="#FF9E00" stroke-width="1.6" />
-
-                  <!-- Front Wheel -->
-                  <circle cx="96" cy="104" r="22" fill="#0D0F14" stroke="#374151" stroke-width="3" />
-                  <circle cx="96" cy="104" r="12" fill="#181C26" stroke="#FF1E2D" stroke-width="1.5" />
-                  <circle cx="96" cy="104" r="4" fill="#FF9E2D" />
-
-                  <!-- Rear Wheel -->
-                  <circle cx="316" cy="103" r="23" fill="#0D0F14" stroke="#374151" stroke-width="3" />
-                  <circle cx="316" cy="103" r="13" fill="#181C26" stroke="#FF1E2D" stroke-width="1.5" />
-                  <circle cx="316" cy="103" r="4.5" fill="#FF9E2D" />
-                </svg>
-              </div>
-
-              <!-- Live Snapshot Telemetry Readouts -->
-              <div class="grid grid-cols-3 gap-2.5 text-center font-mono">
-                <div class="rounded-lg bg-obsidian/80 border border-white/10 p-2.5">
-                  <div class="text-[10px] uppercase tracking-wider text-gray-400">Aero Load</div>
-                  <div class="text-sm font-bold text-telemetryCyan mt-0.5">+4.8G</div>
-                </div>
-                <div class="rounded-lg bg-obsidian/80 border border-white/10 p-2.5">
-                  <div class="text-[10px] uppercase tracking-wider text-gray-400">ERS Deploy</div>
-                  <div class="text-sm font-bold text-amberRace mt-0.5">AUTO-MAP</div>
-                </div>
-                <div class="rounded-lg bg-obsidian/80 border border-white/10 p-2.5">
-                  <div class="text-[10px] uppercase tracking-wider text-gray-400">Tire Temp</div>
-                  <div class="text-sm font-bold text-crimson mt-0.5">96.4°C</div>
-                </div>
-              </div>
-            </div>
+      <div class="feature-grid">
+        <article class="feature-card feature-large">
+          <div class="feature-art track-art">
+            <div class="track-line" aria-hidden="true"></div>
+            <span class="art-tag">01 / CONTROL</span>
           </div>
+          <div class="feature-info">
+            <h3>FEEL THE<br />RACING LINE.</h3>
+            <p>Master the balance between control, commitment, and speed.</p>
+            <span class="feature-number">01</span>
+          </div>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-art strategy-art">
+            <div class="strategy-lines" aria-hidden="true"></div>
+            <span class="art-tag">02 / STRATEGY</span>
+          </div>
+          <div class="feature-info">
+            <h3>THINK<br />AT SPEED.</h3>
+            <p>Race smart. Adapt fast. Make every move count.</p>
+            <span class="feature-number">02</span>
+          </div>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-art grid-art">
+            <span class="art-tag">03 / COMPETITION</span>
+            <div class="grid-lights" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="grid-word" aria-hidden="true">LIGHTS<br />OUT.</div>
+          </div>
+          <div class="feature-info">
+            <h3>OWN THE<br />GRID.</h3>
+            <p>Find your place on the grid and fight for every position.</p>
+            <span class="feature-number">03</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery section" id="gallery">
+      <div class="section-kicker">03 / VISUAL IDENTITY</div>
+      <div class="gallery-head">
+        <h2>THE WORLD<br /><span>OF OWGP.</span></h2>
+        <p>A sport of split-second decisions.<br />A world built on speed.</p>
+      </div>
+
+      <figure class="gallery-showcase">
+        <img
+          src="assets/owgp-race.png"
+          alt="Open-wheel race cars battling through a high-speed corner on the OWGP circuit"
+          loading="lazy"
+        />
+        <figcaption>OWGP CIRCUIT PREVIEW — PACK RACING AT FULL PACE</figcaption>
+      </figure>
+
+      <div class="gallery-strip">
+        <div class="gallery-tile tile-one">
+          <span>RACE WEEKEND</span>
+          <strong>THE GRID<br />IS CALLING.</strong>
+        </div>
+        <div class="gallery-tile tile-two">
+          <span>PERFORMANCE</span>
+          <strong>EVERY<br />DETAIL.</strong>
+        </div>
+        <div class="gallery-tile tile-three">
+          <span>COMPETITION</span>
+          <strong>ONE GOAL.<br />ONE WIN.</strong>
         </div>
       </div>
     </section>
 
-    <!-- 2) PIT-WALL TIMING TOWER COUNTDOWN -->
-    <section id="countdown" class="py-14 sm:py-20 border-b border-white/10 bg-obsidian">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="carbon-panel rounded-2xl border border-white/15 p-6 sm:p-10 shadow-xl">
-          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-white/10">
-            <div>
-              <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-crimson mb-2">
-                <span class="w-2 h-2 rounded-full bg-crimson live-dot"></span>
-                <span>Pit-Wall Timing Tower</span>
-              </div>
-              <h2 class="font-display font-bold text-2xl sm:text-4xl text-white">
-                Target Launch Window Countdown
-              </h2>
-            </div>
-            <p class="font-mono text-xs sm:text-sm text-gray-400">
-              WINDOW: <span id="target-window-label" class="text-amberRace font-semibold">Q2 LAUNCH WINDOW</span>
-            </p>
-          </div>
-
-          <!-- 4 Timing Blocks -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 my-8 font-mono">
-            <div class="rounded-xl bg-obsidian/95 border border-white/10 p-5 sm:p-6 text-center relative overflow-hidden">
-              <div class="h-1 w-full bg-crimson/70 absolute top-0 left-0"></div>
-              <div id="cd-days" class="text-4xl sm:text-6xl font-bold text-white tracking-tight">00</div>
-              <div class="mt-2 text-xs uppercase tracking-[0.2em] text-gray-400">Days</div>
-            </div>
-
-            <div class="rounded-xl bg-obsidian/95 border border-white/10 p-5 sm:p-6 text-center relative overflow-hidden">
-              <div class="h-1 w-full bg-amberRace/70 absolute top-0 left-0"></div>
-              <div id="cd-hours" class="text-4xl sm:text-6xl font-bold text-white tracking-tight">00</div>
-              <div class="mt-2 text-xs uppercase tracking-[0.2em] text-gray-400">Hours</div>
-            </div>
-
-            <div class="rounded-xl bg-obsidian/95 border border-white/10 p-5 sm:p-6 text-center relative overflow-hidden">
-              <div class="h-1 w-full bg-telemetryCyan/70 absolute top-0 left-0"></div>
-              <div id="cd-minutes" class="text-4xl sm:text-6xl font-bold text-white tracking-tight">00</div>
-              <div class="mt-2 text-xs uppercase tracking-[0.2em] text-gray-400">Minutes</div>
-            </div>
-
-            <div class="rounded-xl bg-obsidian/95 border border-white/10 p-5 sm:p-6 text-center relative overflow-hidden">
-              <div class="h-1 w-full bg-crimson absolute top-0 left-0"></div>
-              <div id="cd-seconds" class="text-4xl sm:text-6xl font-bold text-crimson tracking-tight">00</div>
-              <div class="mt-2 text-xs uppercase tracking-[0.2em] text-gray-400">Seconds</div>
-            </div>
-          </div>
-
-          <!-- Timing Tower Footer Note -->
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono text-gray-400 pt-2">
-            <span>SESSION STATUS: <strong class="text-white">DEVELOPMENT &amp; PLAYTEST PREP</strong></span>
-            <span>*Target window is provisional and subject to final telemetry calibration.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3) KEY GAME PILLARS / FEATURES -->
-    <section id="pillars" class="py-16 sm:py-24 border-b border-white/10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mb-12">
-          <p class="font-mono text-xs uppercase tracking-[0.2em] text-amberRace font-semibold mb-2">
-            Core Architecture
-          </p>
-          <h2 class="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
-            Built for Authentic Open-Wheel Craft
-          </h2>
-          <p class="mt-3 text-gray-400 text-base sm:text-lg">
-            Every system in OWGP is tuned to reward throttle discipline, late braking zones, and tactical decision-making across full race distances.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Pillar 1 -->
-          <article class="carbon-panel rounded-2xl border border-white/10 hover:border-crimson/50 p-6 sm:p-8 transition group">
-            <div class="flex items-center justify-between mb-5">
-              <div class="w-11 h-11 rounded-xl bg-crimson/15 border border-crimson/40 flex items-center justify-center text-crimson">
-                <!-- Wind / Aero Icon -->
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </div>
-              <span class="font-mono text-xs text-gray-500 group-hover:text-crimson transition">01 / AERO &amp; PHYSICS</span>
-            </div>
-            <h3 class="font-display font-bold text-xl sm:text-2xl text-white mb-2.5">
-              Aerodynamic &amp; Physics Simulation
-            </h3>
-            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Experience ground-effect downforce, dirty-air wake turbulence when following closely, and dynamic drag reduction (DRS) zones that alter cornering stability in real time.
-            </p>
-          </article>
-
-          <!-- Pillar 2 -->
-          <article class="carbon-panel rounded-2xl border border-white/10 hover:border-amberRace/50 p-6 sm:p-8 transition group">
-            <div class="flex items-center justify-between mb-5">
-              <div class="w-11 h-11 rounded-xl bg-amberRace/15 border border-amberRace/40 flex items-center justify-center text-amberRace">
-                <!-- Weather / Tire Strategy Icon -->
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M8 19v2m4-2v2m4-2v2" stroke-linecap="round" />
-                </svg>
-              </div>
-              <span class="font-mono text-xs text-gray-500 group-hover:text-amberRace transition">02 / WEATHER &amp; TIRES</span>
-            </div>
-            <h3 class="font-display font-bold text-xl sm:text-2xl text-white mb-2.5">
-              Dynamic Weather &amp; Tire Strategy
-            </h3>
-            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Track surface moisture evolves dynamically from damp racing lines to standing water. Balance soft, medium, hard, intermediate, and wet compounds against thermal grain and blistering.
-            </p>
-          </article>
-
-          <!-- Pillar 3 -->
-          <article class="carbon-panel rounded-2xl border border-white/10 hover:border-telemetryCyan/50 p-6 sm:p-8 transition group">
-            <div class="flex items-center justify-between mb-5">
-              <div class="w-11 h-11 rounded-xl bg-telemetryCyan/15 border border-telemetryCyan/40 flex items-center justify-center text-telemetryCyan">
-                <!-- Circuit / Flag Icon -->
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" stroke-linecap="round" stroke-linejoin="round" />
-                  <line x1="4" y1="22" x2="4" y2="15" stroke-linecap="round" />
-                </svg>
-              </div>
-              <span class="font-mono text-xs text-gray-500 group-hover:text-telemetryCyan transition">03 / GLOBAL CIRCUITS</span>
-            </div>
-            <h3 class="font-display font-bold text-xl sm:text-2xl text-white mb-2.5">
-              Global Grand Prix Circuits
-            </h3>
-            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Race across high-speed street layouts, sweeping mountain passes, and technical stadium complexes featuring laser-scanned elevation shifts, kerb profiles, and pit-lane choreography.
-            </p>
-          </article>
-
-          <!-- Pillar 4 -->
-          <article class="carbon-panel rounded-2xl border border-white/10 hover:border-crimson/50 p-6 sm:p-8 transition group">
-            <div class="flex items-center justify-between mb-5">
-              <div class="w-11 h-11 rounded-xl bg-crimson/15 border border-crimson/40 flex items-center justify-center text-crimson">
-                <!-- Telemetry / Multiplayer Icon -->
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 12h4l3-9 4 18 3-9h4" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </div>
-              <span class="font-mono text-xs text-gray-500 group-hover:text-crimson transition">04 / MULTIPLAYER &amp; TELEMETRY</span>
-            </div>
-            <h3 class="font-display font-bold text-xl sm:text-2xl text-white mb-2.5">
-              Wheel-to-Wheel Multiplayer &amp; Telemetry
-            </h3>
-            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Compete in structured ranked grids with stewarding rules, safety car deployments, and live pit-wall telemetry streams covering sector deltas, brake bias, and ERS harvest rates.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4) INTERACTIVE TELEMETRY / LIVERY PREVIEW SWITCHER -->
-    <section id="livery-telemetry" class="py-16 sm:py-24 border-b border-white/10 bg-obsidian">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
-          <div>
-            <p class="font-mono text-xs uppercase tracking-[0.2em] text-crimson font-semibold mb-2">
-              Live Spec Configurator
-            </p>
-            <h2 class="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight">
-              Livery &amp; Telemetry Preview
-            </h2>
-          </div>
-
-          <!-- Livery Switcher Buttons -->
-          <div id="livery-buttons" class="flex flex-wrap gap-2.5" role="group" aria-label="Select concept racing livery">
-            <button
-              type="button"
-              data-livery="apex-crimson"
-              class="livery-btn px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-semibold border transition cursor-pointer"
-            >
-              Apex Crimson
-            </button>
-            <button
-              type="button"
-              data-livery="volt-carbon"
-              class="livery-btn px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-semibold border transition cursor-pointer"
-            >
-              Volt Carbon
-            </button>
-            <button
-              type="button"
-              data-livery="heritage-gold"
-              class="livery-btn px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-semibold border transition cursor-pointer"
-            >
-              Heritage Gold
-            </button>
-          </div>
-        </div>
-
-        <!-- Preview Stage + Telemetry Bars -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          <!-- Left: Dynamic Livery Visual Bay -->
-          <div class="lg:col-span-7 carbon-panel rounded-2xl border border-white/15 p-6 sm:p-8 flex flex-col justify-between">
-            <div class="flex items-center justify-between gap-4 mb-6">
-              <div>
-                <span id="livery-code" class="font-mono text-xs uppercase tracking-widest text-gray-400">CHASSIS #01</span>
-                <h3 id="livery-name" class="font-display font-bold text-2xl text-white mt-0.5">Apex Crimson</h3>
-              </div>
-              <span
-                id="livery-badge"
-                class="px-3 py-1 rounded-full font-mono text-xs font-semibold border"
-              >
-                HIGH DOWNFORCE
-              </span>
-            </div>
-
-            <!-- Interactive SVG Formula Car that adapts colors & trim dynamically -->
-            <div class="rounded-xl bg-obsidian border border-white/10 p-4 sm:p-6 my-auto">
-              <svg viewBox="0 0 520 190" class="w-full h-auto" role="img" aria-label="Dynamic open-wheel car livery preview">
-                <!-- Track / Telemetry Reference Line -->
-                <line x1="20" y1="162" x2="500" y2="162" stroke="#242936" stroke-width="2" />
-                <line x1="20" y1="42" x2="500" y2="42" stroke="#151922" stroke-dasharray="5 5" />
-
-                <!-- Slipstream Arcs -->
-                <path id="svg-stream-1" d="M24 56 Q170 42 290 58 T496 52" fill="none" stroke="#FF1E2D" stroke-opacity="0.35" stroke-width="1.8" stroke-dasharray="7 5" />
-                <path id="svg-stream-2" d="M36 86 Q190 78 310 88 T492 82" fill="none" stroke="#FF9E00" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="5 6" />
-
-                <!-- Rear Wing Endplate & Mainplane -->
-                <path id="svg-rear-wing" d="M408 66 L454 58 L448 98 L412 100 Z" fill="#181C26" stroke="#FF1E2D" stroke-width="2.2" />
-                <path id="svg-rear-flap" d="M416 76 L450 71" stroke="#FF9E00" stroke-width="2" />
-
-                <!-- Main Car Body -->
-                <path
-                  id="svg-body"
-                  d="M64 132 L166 112 L252 94 L414 98 L426 130 L325 135 L145 137 Z"
-                  fill="#151821"
-                  stroke="#E5E7EB"
-                  stroke-width="2"
-                />
-
-                <!-- Livery Accent Stripe -->
-                <path
-                  id="svg-stripe"
-                  d="M142 122 L262 101 L412 106"
-                  fill="none"
-                  stroke="#FF1E2D"
-                  stroke-width="4.5"
-                  stroke-linecap="round"
-                />
-
-                <!-- Number Roundel -->
-                <circle cx="286" cy="115" r="14" fill="#090A0D" stroke="#FF1E2D" stroke-width="1.8" />
-                <text id="svg-car-number" x="286" y="119" text-anchor="middle" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">
-                  01
-                </text>
-
-                <!-- Halo Safety Structure -->
-                <path d="M236 95 Q264 74 298 94" fill="none" stroke="#F3F4F6" stroke-width="3.8" stroke-linecap="round" />
-
-                <!-- Front Wing -->
-                <path id="svg-front-wing" d="M38 140 L106 130 L114 142 L44 147 Z" fill="#FF1E2D" />
-                <path id="svg-front-strake" d="M48 134 L102 126" stroke="#FF9E00" stroke-width="2" />
-
-                <!-- Front Tire -->
-                <circle cx="118" cy="132" r="28" fill="#0C0E13" stroke="#374151" stroke-width="3.5" />
-                <circle cx="118" cy="132" r="16" fill="#181C26" stroke="#FF1E2D" stroke-width="1.8" />
-                <circle id="svg-front-nut" cx="118" cy="132" r="5" fill="#FF1E2D" />
-
-                <!-- Rear Tire -->
-                <circle cx="392" cy="131" r="29" fill="#0C0E13" stroke="#374151" stroke-width="3.5" />
-                <circle cx="392" cy="131" r="17" fill="#181C26" stroke="#FF1E2D" stroke-width="1.8" />
-                <circle id="svg-rear-nut" cx="392" cy="131" r="5.5" fill="#FF1E2D" />
-              </svg>
-            </div>
-
-            <p id="livery-desc" class="mt-5 text-sm text-gray-300 leading-relaxed">
-              Aggressive factory aero package tuned for maximum mid-corner grip and high-speed technical sectors.
-            </p>
-
-            <div class="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-              <span class="font-mono text-xs text-gray-400">
-                AVAILABLE SLOTS: <strong id="livery-slots-remaining" class="text-white">--</strong>
-              </span>
-              <button
-                id="reserve-selected-livery-btn"
-                type="button"
-                class="px-4 py-2 rounded-lg bg-crimson hover:bg-red-600 text-white font-mono text-xs font-semibold transition cursor-pointer"
-              >
-                Reserve Grid Spot with Livery &rarr;
-              </button>
-            </div>
-          </div>
-
-          <!-- Right: Live Telemetry Readout Panel -->
-  <!-- Grid Spot Reservation Modal -->
-  <div
-    id="grid-modal"
-    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="grid-modal-title"
-  >
-    <div class="carbon-panel w-full max-w-xl rounded-2xl border border-white/15 p-6 sm:p-7 shadow-2xl relative max-h-[92vh] overflow-y-auto">
-      <div class="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
-        <div>
-          <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-crimson">
-            <span class="w-2 h-2 rounded-full bg-crimson live-dot"></span>
-            <span>Pit-Lane Entry &amp; Grid Allocation</span>
-          </div>
-          <h2 id="grid-modal-title" class="font-display font-bold text-2xl text-white mt-1">
-            Reserve Your OWGP Grid Spot
-          </h2>
-        </div>
-        <button
-          id="close-grid-modal-btn"
-          type="button"
-          aria-label="Close reservation modal"
-          class="w-9 h-9 rounded-lg bg-obsidian hover:bg-white/10 border border-white/15 text-gray-300 hover:text-white flex items-center justify-center font-mono text-sm transition cursor-pointer"
+    <section class="community section" id="community">
+      <div class="community-shape" aria-hidden="true"></div>
+      <div class="section-kicker">04 / GET IN THE GAME</div>
+      <div class="community-content">
+        <p class="eyebrow">YOUR RACE. YOUR STORY.</p>
+        <h2>THE GRID<br />IS <em>WAITING.</em></h2>
+        <p>Follow development, catch the latest updates, and be part of the OWGP journey.</p>
+        <a
+          class="button button-primary"
+          href="https://github.com/Imagine-Cloud-Service/owgp-source"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          ✕
-        </button>
+          FOLLOW DEVELOPMENT <span>↗</span>
+        </a>
       </div>
-
-      <!-- Remaining Grid Slots Banner inside Modal -->
-      <div class="mt-4 px-4 py-2.5 rounded-xl bg-obsidian/90 border border-white/10 flex items-center justify-between font-mono text-xs">
-        <span class="text-gray-400">TOTAL LAUNCH GRID CAPACITY</span>
-        <span>
-          <strong id="modal-slots-remaining" class="text-amberRace text-sm">--</strong>
-          <span class="text-gray-500">/ 36 SLOTS OPEN</span>
-        </span>
+      <div class="community-footer">
+        <span>OPEN WHEEL GRAND PRIX</span>
+        <span>ENGINEERED FOR THE THRILL.</span>
       </div>
-
-      <form id="grid-reservation-form" class="mt-5 space-y-4" novalidate>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Driver Name / Callsign -->
-          <div>
-            <label for="driver-callsign" class="block font-mono text-xs uppercase tracking-wider text-gray-300 mb-1.5">
-              Driver Name / Callsign *
-            </label>
-            <input
-              id="driver-callsign"
-              type="text"
-              maxlength="28"
-              placeholder="e.g. M. Vance / APEX-07"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/25 transition"
-            />
-          </div>
-
-          <!-- Email -->
-          <div>
-            <label for="driver-email" class="block font-mono text-xs uppercase tracking-wider text-gray-300 mb-1.5">
-              Driver Email *
-            </label>
-            <input
-              id="driver-email"
-              type="email"
-              placeholder="driver@pitwall.racing"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/25 transition"
-            />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Preferred Livery -->
-          <div>
-            <label for="preferred-livery" class="block font-mono text-xs uppercase tracking-wider text-gray-300 mb-1.5">
-              Preferred Livery
-            </label>
-            <select
-              id="preferred-livery"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-white font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/25 transition"
-            >
-              <option value="apex-crimson">Apex Crimson (#01 Spec)</option>
-              <option value="volt-carbon">Volt Carbon (#14 Low-Drag)</option>
-              <option value="heritage-gold">Heritage Gold (#77 Endurance)</option>
-            </select>
-          </div>
-
-          <!-- Car Number (#01-#99) -->
-          <div>
-            <label for="car-number" class="block font-mono text-xs uppercase tracking-wider text-gray-300 mb-1.5">
-              Car Number (#01–#99) *
-            </label>
-            <input
-              id="car-number"
-              type="text"
-              inputmode="numeric"
-              maxlength="2"
-              placeholder="07"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-white placeholder-gray-500 font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/25 transition"
-            />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Starting Grid Slot / Sector -->
-          <div>
-            <label for="grid-slot" class="block font-mono text-xs uppercase tracking-wider text-gray-300 mb-1.5">
-              Starting Grid Slot / Sector
-            </label>
-            <select
-              id="grid-slot"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-white font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/25 transition"
-            >
-              <option value="Row 1 — Pole & Front Row (S1)">Row 1 — Pole &amp; Front Row (S1)</option>
-              <option value="Row 2 — Second Row Attack (S1)">Row 2 — Second Row Attack (S1)</option>
-              <option value="Midfield — Sectors 2–3">Midfield — Sectors 2–3</option>
-              <option value="Pit-Lane / Strategy Wildcard">Pit-Lane / Strategy Wildcard</option>
-            </select>
-          </div>
-
-          <!-- Race Class -->
-          <div>
-            <label for="race-class" class="block font-mono text-xs uppercase tracking-wider text-gray-300 mb-1.5">
-              Race Class
-            </label>
-            <select
-              id="race-class"
-              class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-white font-mono text-sm focus:outline-none focus:border-crimson focus:ring-2 focus:ring-crimson/25 transition"
-            >
-              <option value="OW1 Pro Championship">OW1 Pro Championship</option>
-              <option value="OW2 Aero Cup">OW2 Aero Cup</option>
-              <option value="Endurance & Weather Series">Endurance &amp; Weather Series</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Modal Validation / Status Message -->
-        <div
-          id="modal-feedback"
-          role="alert"
-          class="hidden px-4 py-2.5 rounded-xl border text-xs font-mono"
-        ></div>
-
-        <div class="pt-2 flex flex-col-reverse sm:flex-row items-center justify-end gap-3">
-          <button
-            id="cancel-modal-btn"
-            type="button"
-            class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-obsidian hover:bg-white/10 border border-white/15 text-gray-300 font-mono text-xs font-semibold transition cursor-pointer"
-          >
-            Close
-          </button>
-          <button
-            type="submit"
-            class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-crimson to-[#d91422] hover:from-[#ff2e3c] hover:to-crimson text-white font-semibold text-sm shadow-lg shadow-crimson/25 transition cursor-pointer"
-          >
-            Confirm Grid Spot Reservation
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Interactive JavaScript: Countdown, Waitlist, Grid Spot Persistence, and Livery/Telemetry Switcher -->
-  <script>
-    (function () {
-      // 1) Pit-Wall Countdown Timer
-      // Sets a target launch window 78 days ahead from initialization so the countdown is always active and ticking
-      const targetLaunchDate = new Date(Date.now() + (78 * 24 * 60 * 60 + 14 * 60 * 60 + 36 * 60) * 1000);
-
-      const elDays = document.getElementById('cd-days');
-      const elHours = document.getElementById('cd-hours');
-      const elMinutes = document.getElementById('cd-minutes');
-      const elSeconds = document.getElementById('cd-seconds');
-
-      function padTwo(num) {
-        return String(Math.max(0, Math.floor(num))).padStart(2, '0');
-      }
-
-      function updateCountdown() {
-        const now = Date.now();
-        const diff = Math.max(0, targetLaunchDate.getTime() - now);
-
-        const totalSeconds = Math.floor(diff / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-
-        if (elDays) elDays.textContent = padTwo(days);
-        if (elHours) elHours.textContent = padTwo(hours);
-        if (elMinutes) elMinutes.textContent = padTwo(minutes);
-        if (elSeconds) elSeconds.textContent = padTwo(seconds);
-      }
-
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-
-      // 2) Persistent Grid Spot Reservation & Waitlist State (localStorage)
-      const STORAGE_KEY = 'owgp_grid_reservation_v1';
-      const TOTAL_GRID_SLOTS = 36;
-      const BASE_RESERVED_SLOTS = 23; // Leaves 13 open slots initially when unreserved
-
-      const form = document.getElementById('waitlist-form');
-      const emailInput = document.getElementById('waitlist-email');
-      const feedbackBox = document.getElementById('waitlist-feedback');
-
-      const heroSlotsEl = document.getElementById('hero-slots-remaining');
-      const modalSlotsEl = document.getElementById('modal-slots-remaining');
-      const liverySlotsEl = document.getElementById('livery-slots-remaining');
-
-      const openGridModalBtn = document.getElementById('open-grid-modal-btn');
-      const openFullGridConfigBtn = document.getElementById('open-full-grid-config-btn');
-      const reserveSelectedLiveryBtn = document.getElementById('reserve-selected-livery-btn');
-      const viewActivePassBtn = document.getElementById('view-active-pass-btn');
-      const activePassShortcutWrap = document.getElementById('active-pass-shortcut-wrap');
-
-      const gridModal = document.getElementById('grid-modal');
-      const closeGridModalBtn = document.getElementById('close-grid-modal-btn');
-      const cancelModalBtn = document.getElementById('cancel-modal-btn');
-      const reservationForm = document.getElementById('grid-reservation-form');
-      const modalFeedback = document.getElementById('modal-feedback');
-
-      const driverCallsignInput = document.getElementById('driver-callsign');
-      const driverEmailInput = document.getElementById('driver-email');
-      const preferredLiverySelect = document.getElementById('preferred-livery');
-      const carNumberInput = document.getElementById('car-number');
-      const gridSlotSelect = document.getElementById('grid-slot');
-      const raceClassSelect = document.getElementById('race-class');
-
-      const passPanel = document.getElementById('reserved-pass-panel');
-      const passCodeEl = document.getElementById('pass-confirmation-code');
-      const passDriverEl = document.getElementById('pass-driver');
-      const passLiveryEl = document.getElementById('pass-livery');
-      const passGridEl = document.getElementById('pass-grid');
-      const passPitbayEl = document.getElementById('pass-pitbay');
-      const passEmailEl = document.getElementById('pass-email');
-      const copyPassBtn = document.getElementById('copy-pass-btn');
-      const editPassBtn = document.getElementById('edit-pass-btn');
-      const cancelPassBtn = document.getElementById('cancel-pass-btn');
-
-      let currentLiveryKey = 'apex-crimson';
-
-      function loadReservation() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return null;
-          const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object' && parsed.email && parsed.passCode) {
-            return parsed;
-          }
-          return null;
-        } catch (err) {
-          return null;
-        }
-      }
-
-      function saveReservation(record) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(record));
-        } catch (err) {
-          // Ignore storage quota or privacy mode errors gracefully
-        }
-      }
-
-      function clearReservation() {
-        try {
-          localStorage.removeItem(STORAGE_KEY);
-        } catch (err) {
-          // Ignore storage errors gracefully
-        }
-      }
-
-      function getRemainingSlots(reservation) {
-        const occupied = BASE_RESERVED_SLOTS + (reservation ? 1 : 0);
-        return Math.max(1, TOTAL_GRID_SLOTS - occupied);
-      }
-
-      function formatCarNumber(rawNum) {
-        const digits = String(rawNum || '').replace(/\D/g, '');
-        const num = parseInt(digits, 10);
-        if (Number.isNaN(num) || num < 1 || num > 99) return null;
-        return String(num).padStart(2, '0');
-      }
-
-      function generatePassCode() {
-        const randomDigits = Math.floor(1000 + Math.random() * 9000);
-        return `OWGP-GRID-${randomDigits}`;
-      }
-
-      function computePitBay(carNumStr, liveryKey) {
-        const num = parseInt(carNumStr, 10) || 1;
-        const bayIndex = ((num + (liveryKey === 'volt-carbon' ? 4 : liveryKey === 'heritage-gold' ? 8 : 0)) % 18) + 1;
-        return `PIT-${String(bayIndex).padStart(2, '0')}`;
-      }
-
-      function showFeedback(message, type) {
-        if (!feedbackBox) return;
-        feedbackBox.classList.remove('hidden');
-        feedbackBox.className =
-          'px-4 py-3 rounded-xl border text-xs sm:text-sm font-mono flex items-start gap-2.5';
-
-        if (type === 'success') {
-          feedbackBox.classList.add('bg-emerald-950/50', 'border-emerald-500/40', 'text-emerald-200');
-          feedbackBox.innerHTML = `<span class="text-emerald-400 font-bold">✓</span><span>${message}</span>`;
-        } else {
-          feedbackBox.classList.add('bg-crimson/15', 'border-crimson/50', 'text-red-200');
-          feedbackBox.innerHTML = `<span class="text-crimson font-bold">!</span><span>${message}</span>`;
-        }
-      }
-
-      function showModalFeedback(message, isError) {
-        if (!modalFeedback) return;
-        modalFeedback.classList.remove('hidden');
-        modalFeedback.className = 'px-4 py-2.5 rounded-xl border text-xs font-mono';
-        if (isError) {
-          modalFeedback.classList.add('bg-crimson/15', 'border-crimson/50', 'text-red-200');
-        } else {
-          modalFeedback.classList.add('bg-emerald-950/50', 'border-emerald-500/40', 'text-emerald-200');
-        }
-        modalFeedback.textContent = message;
-      }
-
-      function hideModalFeedback() {
-        if (modalFeedback) {
-          modalFeedback.classList.add('hidden');
-          modalFeedback.textContent = '';
-        }
-      }
-
-      function syncReservationUI() {
-        const reservation = loadReservation();
-        const remaining = getRemainingSlots(reservation);
-
-        if (heroSlotsEl) {
-          heroSlotsEl.textContent = `${remaining} / ${TOTAL_GRID_SLOTS}`;
-        }
-        if (modalSlotsEl) {
-          modalSlotsEl.textContent = String(remaining);
-        }
-        if (liverySlotsEl) {
-          liverySlotsEl.textContent = `${remaining} of ${TOTAL_GRID_SLOTS} Grid Spots Open`;
-        }
-
-        if (reservation) {
-          const liverySpec = liveries[reservation.livery] || liveries['apex-crimson'];
-          if (passPanel) passPanel.classList.remove('hidden');
-          if (activePassShortcutWrap) activePassShortcutWrap.classList.remove('hidden');
-
-          if (passCodeEl) passCodeEl.textContent = reservation.passCode;
-          if (passDriverEl) passDriverEl.textContent = reservation.callsign;
-          if (passLiveryEl) passLiveryEl.textContent = `#${reservation.carNumber} · ${liverySpec.name}`;
-          if (passGridEl) passGridEl.textContent = `${reservation.raceClass.split(' ')[0]} · ${reservation.gridSlot.split('—')[0].trim()}`;
-          if (passPitbayEl) passPitbayEl.textContent = reservation.pitBay;
-          if (passEmailEl) passEmailEl.textContent = reservation.email;
-        } else {
-          if (passPanel) passPanel.classList.add('hidden');
-          if (activePassShortcutWrap) activePassShortcutWrap.classList.add('hidden');
-        }
-      }
-
-      function openGridModal(prefillLiveryKey, prefillEmail) {
-        if (!gridModal) return;
-        hideModalFeedback();
-
-        const existing = loadReservation();
-        if (existing) {
-          if (driverCallsignInput) driverCallsignInput.value = existing.callsign || '';
-          if (driverEmailInput) driverEmailInput.value = existing.email || '';
-          if (preferredLiverySelect) preferredLiverySelect.value = prefillLiveryKey || existing.livery || 'apex-crimson';
-          if (carNumberInput) carNumberInput.value = existing.carNumber || '07';
-          if (gridSlotSelect) gridSlotSelect.value = existing.gridSlot || gridSlotSelect.options[0].value;
-          if (raceClassSelect) raceClassSelect.value = existing.raceClass || raceClassSelect.options[0].value;
-        } else {
-          if (driverCallsignInput) driverCallsignInput.value = '';
-          if (driverEmailInput) driverEmailInput.value = prefillEmail || (emailInput ? emailInput.value.trim() : '');
-          if (preferredLiverySelect) preferredLiverySelect.value = prefillLiveryKey || currentLiveryKey || 'apex-crimson';
-          if (carNumberInput && !carNumberInput.value) carNumberInput.value = '07';
-        }
-
-        gridModal.classList.remove('hidden');
-        gridModal.classList.add('flex');
-        if (driverCallsignInput) {
-          driverCallsignInput.focus();
-        }
-      }
-
-      function closeGridModal() {
-        if (!gridModal) return;
-        gridModal.classList.add('hidden');
-        gridModal.classList.remove('flex');
-        hideModalFeedback();
-      }
-
-      if (openGridModalBtn) {
-        openGridModalBtn.addEventListener('click', () => openGridModal(currentLiveryKey));
-      }
-      if (openFullGridConfigBtn) {
-        openFullGridConfigBtn.addEventListener('click', () => openGridModal(currentLiveryKey));
-      }
-      if (reserveSelectedLiveryBtn) {
-        reserveSelectedLiveryBtn.addEventListener('click', () => openGridModal(currentLiveryKey));
-      }
-      if (editPassBtn) {
-        editPassBtn.addEventListener('click', () => openGridModal());
-      }
-      if (viewActivePassBtn) {
-        viewActivePassBtn.addEventListener('click', () => {
-          if (passPanel) {
-            passPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        });
-      }
-      if (closeGridModalBtn) {
-        closeGridModalBtn.addEventListener('click', closeGridModal);
-      }
-      if (cancelModalBtn) {
-        cancelModalBtn.addEventListener('click', closeGridModal);
-      }
-      if (gridModal) {
-        gridModal.addEventListener('click', (event) => {
-          if (event.target === gridModal) {
-            closeGridModal();
-          }
-        });
-      }
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && gridModal && !gridModal.classList.contains('hidden')) {
-          closeGridModal();
-        }
-      });
-
-      // Quick email form submits either reserves directly with default/active livery or opens full modal
-      if (form && emailInput) {
-        form.addEventListener('submit', function (event) {
-          event.preventDefault();
-          const emailValue = emailInput.value.trim();
-          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-          if (!emailValue || !emailPattern.test(emailValue)) {
-            showFeedback('Please enter a valid driver or team email address to reserve a grid spot.', 'error');
-            emailInput.focus();
-            return;
-          }
-
-          const existing = loadReservation();
-          const defaultCallsign = emailValue.split('@')[0].toUpperCase().slice(0, 14) || 'DRIVER';
-          const carNum = existing ? existing.carNumber : '07';
-          const liveryKey = existing ? existing.livery : currentLiveryKey;
-          const record = {
-            passCode: existing ? existing.passCode : generatePassCode(),
-            callsign: existing ? existing.callsign : defaultCallsign,
-            email: emailValue,
-            livery: liveryKey,
-            carNumber: carNum,
-            gridSlot: existing ? existing.gridSlot : 'Row 1 — Pole & Front Row (S1)',
-            raceClass: existing ? existing.raceClass : 'OW1 Pro Championship',
-            pitBay: computePitBay(carNum, liveryKey),
-            updatedAt: new Date().toISOString(),
-          };
-
-          saveReservation(record);
-          if (record.livery && liveries[record.livery]) {
-            applyLivery(record.livery);
-          }
-          syncReservationUI();
-          showFeedback(
-            `Grid spot reserved for <strong>${record.callsign}</strong> (#${record.carNumber}) · Pass <span class="text-amberRace font-semibold">${record.passCode}</span> saved to your pit-wall.`,
-            'success'
-          );
-          form.reset();
-        });
-      }
-
-      // Full Modal Reservation Form Submission & Validation
-      if (reservationForm) {
-        reservationForm.addEventListener('submit', function (event) {
-          event.preventDefault();
-          hideModalFeedback();
-
-          const callsign = driverCallsignInput ? driverCallsignInput.value.trim() : '';
-          const email = driverEmailInput ? driverEmailInput.value.trim() : '';
-          const liveryKey = preferredLiverySelect ? preferredLiverySelect.value : 'apex-crimson';
-          const formattedCarNum = formatCarNumber(carNumberInput ? carNumberInput.value : '');
-          const gridSlot = gridSlotSelect ? gridSlotSelect.value : 'Row 1 — Pole & Front Row (S1)';
-          const raceClass = raceClassSelect ? raceClassSelect.value : 'OW1 Pro Championship';
-          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-          if (callsign.length < 2) {
-            showModalFeedback('Enter a Driver Name or Callsign (at least 2 characters).', true);
-            if (driverCallsignInput) driverCallsignInput.focus();
-            return;
-          }
-          if (!email || !emailPattern.test(email)) {
-            showModalFeedback('Enter a valid Driver Email address for playtest & pass delivery.', true);
-            if (driverEmailInput) driverEmailInput.focus();
-            return;
-          }
-          if (!formattedCarNum) {
-            showModalFeedback('Enter a valid Car Number between 01 and 99.', true);
-            if (carNumberInput) carNumberInput.focus();
-            return;
-          }
-
-          const existing = loadReservation();
-          const record = {
-            passCode: existing ? existing.passCode : generatePassCode(),
-            callsign: callsign,
-            email: email,
-            livery: liveryKey,
-            carNumber: formattedCarNum,
-            gridSlot: gridSlot,
-            raceClass: raceClass,
-            pitBay: computePitBay(formattedCarNum, liveryKey),
-            updatedAt: new Date().toISOString(),
-          };
-
-          saveReservation(record);
-          applyLivery(liveryKey);
-          syncReservationUI();
-          closeGridModal();
-          showFeedback(
-            `Grid spot locked in for <strong>${record.callsign}</strong> (#${record.carNumber}) in <strong>${record.gridSlot}</strong> · Pass <span class="text-amberRace font-semibold">${record.passCode}</span>.`,
-            'success'
-          );
-        });
-      }
-
-      // Copy Grid Pass Details to Clipboard
-      if (copyPassBtn) {
-        copyPassBtn.addEventListener('click', function () {
-          const reservation = loadReservation();
-          if (!reservation) return;
-          const liverySpec = liveries[reservation.livery] || liveries['apex-crimson'];
-          const passSummary = [
-            `OWGP GRID PASS: ${reservation.passCode}`,
-            `Driver: ${reservation.callsign}`,
-            `Email: ${reservation.email}`,
-            `Car: #${reservation.carNumber} (${liverySpec.name})`,
-            `Grid Slot: ${reservation.gridSlot}`,
-            `Class: ${reservation.raceClass}`,
-            `Pit Allocation: ${reservation.pitBay}`,
-          ].join(' | ');
-
-          let copied = false;
-          try {
-            const tempArea = document.createElement('textarea');
-            tempArea.value = passSummary;
-            tempArea.setAttribute('readonly', '');
-            tempArea.style.position = 'absolute';
-            tempArea.style.left = '-9999px';
-            document.body.appendChild(tempArea);
-            tempArea.select();
-            copied = document.execCommand('copy');
-            document.body.removeChild(tempArea);
-          } catch (err) {
-            copied = false;
-          }
-
-          if (copied) {
-            showFeedback(`Copied Grid Pass <strong>${reservation.passCode}</strong> to clipboard.`, 'success');
-          } else {
-            showFeedback(`Grid Pass Reference: <strong class="text-amberRace">${reservation.passCode}</strong>`, 'success');
-          }
-        });
-      }
-
-      // Release / Cancel Reserved Grid Spot
-      if (cancelPassBtn) {
-        cancelPassBtn.addEventListener('click', function () {
-          const existing = loadReservation();
-          clearReservation();
-          syncReservationUI();
-          showFeedback(
-            existing
-              ? `Grid pass <strong>${existing.passCode}</strong> released. Your slot has returned to the open grid pool.`
-              : 'Grid spot reservation released.',
-            'error'
-          );
-        });
-      }
-
-      // 3) Interactive Livery & Telemetry Switcher
-      const liveries = {
-        'apex-crimson': {
-          code: 'CHASSIS #01 // SPEC-AERO',
-          name: 'Apex Crimson',
-          badge: 'HIGH DOWNFORCE',
-          badgeStyle: 'bg-crimson/15 border-crimson/40 text-crimson',
-          desc: 'Aggressive factory aero package tuned for maximum mid-corner grip, steep wing angles, and high-speed technical sectors.',
-          speedLabel: '342 km/h',
-          speedPct: 84,
-          downforceLabel: '95 / 100',
-          downforcePct: 95,
-          brakingLabel: '92 / 100',
-          brakingPct: 92,
-          balance: '54.5% FRONT',
-          drag: '0.81 Cd',
-          carNumber: '01',
-          primaryColor: '#FF1E2D',
-          secondaryColor: '#FF9E00',
-          bodyFill: '#151821',
-        },
-        'volt-carbon': {
-          code: 'CHASSIS #14 // LOW-DRAG',
-          name: 'Volt Carbon',
-          badge: 'SLIPSTREAM SPEC',
-          badgeStyle: 'bg-telemetryCyan/15 border-telemetryCyan/40 text-telemetryCyan',
-          desc: 'Exposed weave carbon monocoque paired with a trimmed rear wing and high-voltage ERS harvest map for straight-line overtakes.',
-          speedLabel: '358 km/h',
-          speedPct: 96,
-          downforceLabel: '82 / 100',
-          downforcePct: 82,
-          brakingLabel: '89 / 100',
-          brakingPct: 89,
-          balance: '52.8% FRONT',
-          drag: '0.68 Cd',
-          carNumber: '14',
-          primaryColor: '#00E5FF',
-          secondaryColor: '#38BDF8',
-          bodyFill: '#11141C',
-        },
-        'heritage-gold': {
-          code: 'CHASSIS #77 // ENDURANCE-MAP',
-          name: 'Heritage Gold',
-          badge: 'BALANCED GT-OPEN',
-          badgeStyle: 'bg-amberRace/15 border-amberRace/40 text-amberRace',
-          desc: 'Classic gold-and-obsidian tribute livery calibrated for consistent tire thermal management and late-stint braking stability.',
-          speedLabel: '349 km/h',
-          speedPct: 89,
-          downforceLabel: '89 / 100',
-          downforcePct: 89,
-          brakingLabel: '96 / 100',
-          brakingPct: 96,
-          balance: '55.2% FRONT',
-          drag: '0.74 Cd',
-          carNumber: '77',
-          primaryColor: '#FF9E00',
-          secondaryColor: '#FDE047',
-          bodyFill: '#171614',
-        },
-      };
-
-      const buttons = document.querySelectorAll('.livery-btn');
-      const elCode = document.getElementById('livery-code');
-      const elName = document.getElementById('livery-name');
-      const elBadge = document.getElementById('livery-badge');
-      const elDesc = document.getElementById('livery-desc');
-
-      const elSpeedLabel = document.getElementById('stat-speed-label');
-      const elDownforceLabel = document.getElementById('stat-downforce-label');
-      const elBrakingLabel = document.getElementById('stat-braking-label');
-
-      const elBarSpeed = document.getElementById('bar-speed');
-      const elBarDownforce = document.getElementById('bar-downforce');
-      const elBarBraking = document.getElementById('bar-braking');
-
-      const elBalance = document.getElementById('stat-balance');
-      const elDrag = document.getElementById('stat-drag');
-
-      // SVG elements to update dynamically
-      const svgBody = document.getElementById('svg-body');
-      const svgStripe = document.getElementById('svg-stripe');
-      const svgRearWing = document.getElementById('svg-rear-wing');
-      const svgRearFlap = document.getElementById('svg-rear-flap');
-      const svgFrontWing = document.getElementById('svg-front-wing');
-      const svgFrontStrake = document.getElementById('svg-front-strake');
-      const svgStream1 = document.getElementById('svg-stream-1');
-      const svgStream2 = document.getElementById('svg-stream-2');
-      const svgCarNumber = document.getElementById('svg-car-number');
-      const svgFrontNut = document.getElementById('svg-front-nut');
-      const svgRearNut = document.getElementById('svg-rear-nut');
-
-      function applyLivery(key) {
-        const spec = liveries[key] || liveries['apex-crimson'];
-        currentLiveryKey = liveries[key] ? key : 'apex-crimson';
-
-        // Update active button states
-        buttons.forEach((btn) => {
-          const isSelected = btn.getAttribute('data-livery') === key;
-          btn.className =
-            'livery-btn px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-semibold border transition cursor-pointer ' +
-            (isSelected
-              ? 'bg-white text-obsidian border-white shadow-md'
-              : 'bg-carbon text-gray-300 border-white/15 hover:border-white/40 hover:text-white');
-        });
-
-        // Update text & badge
-        if (elCode) elCode.textContent = spec.code;
-        if (elName) elName.textContent = spec.name;
-        if (elDesc) elDesc.textContent = spec.desc;
-        if (elBadge) {
-          elBadge.textContent = spec.badge;
-          elBadge.className = `px-3 py-1 rounded-full font-mono text-xs font-semibold border ${spec.badgeStyle}`;
-        }
-
-        // Update telemetry numbers & bars
-        if (elSpeedLabel) elSpeedLabel.textContent = spec.speedLabel;
-        if (elDownforceLabel) elDownforceLabel.textContent = spec.downforceLabel;
-        if (elBrakingLabel) elBrakingLabel.textContent = spec.brakingLabel;
-
-        if (elBarSpeed) elBarSpeed.style.width = `${spec.speedPct}%`;
-        if (elBarDownforce) elBarDownforce.style.width = `${spec.downforcePct}%`;
-        if (elBarBraking) elBarBraking.style.width = `${spec.brakingPct}%`;
-
-        if (elBalance) elBalance.textContent = spec.balance;
-        if (elDrag) elDrag.textContent = spec.drag;
-
-        // Update SVG car livery colors & car number
-        if (svgBody) svgBody.setAttribute('fill', spec.bodyFill);
-        if (svgStripe) svgStripe.setAttribute('stroke', spec.primaryColor);
-        if (svgRearWing) svgRearWing.setAttribute('stroke', spec.primaryColor);
-        if (svgRearFlap) svgRearFlap.setAttribute('stroke', spec.secondaryColor);
-        if (svgFrontWing) svgFrontWing.setAttribute('fill', spec.primaryColor);
-        if (svgFrontStrake) svgFrontStrake.setAttribute('stroke', spec.secondaryColor);
-        if (svgStream1) svgStream1.setAttribute('stroke', spec.primaryColor);
-        if (svgStream2) svgStream2.setAttribute('stroke', spec.secondaryColor);
-        if (svgCarNumber) svgCarNumber.textContent = spec.carNumber;
-        if (svgFrontNut) svgFrontNut.setAttribute('fill', spec.primaryColor);
-        if (svgRearNut) svgRearNut.setAttribute('fill', spec.primaryColor);
-      }
-
-      buttons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const key = btn.getAttribute('data-livery');
-          applyLivery(key);
-        });
-      // Initialize default livery & sync persistent grid reservation
-      const initialReservation = loadReservation();
-      applyLivery(initialReservation && liveries[initialReservation.livery] ? initialReservation.livery : 'apex-crimson');
-      syncReservationUI();
-
-      // Set current year in footer
-      const yearEl = document.getElementById('copyright-year');
-      if (yearEl) {
-        yearEl.textContent = String(new Date().getFullYear());
-      }
-    })();
-  </script>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="brand footer-brand" href="#top" aria-label="Back to top">
+      <span class="brand-mark">O<span>W</span></span>
+      <span class="brand-name">OPEN WHEEL<br /><b>GRAND PRIX</b></span>
+    </a>
+    <p>© 2026 OPEN WHEEL GRAND PRIX. ALL RIGHTS RESERVED.</p>
+    <a href="#top" class="back-top">BACK TO TOP ↑</a>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
